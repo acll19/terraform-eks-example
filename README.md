@@ -24,4 +24,5 @@ Steps:
     kubectl get pod -n application
     kubectl describe configmap app-config -n application
     kubectl describe secret -n application aws-s3-user-creds
+    kubectl port-forward <pod-name> 3000:3000 -n application
     ```
