@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s3-express-app
+  namespace: application
+  labels:
+    app: s3-express-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: s3-express-app
+  template:
+    metadata:
+      labels:
+        app: s3-express-app
+    spec:
+      containers:
+      - name: s3-express-app
+        image: acll19/s3-express-app
+        ports:
+        - containerPort: 3000
+        env:
+          - name: AWS_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: aws-s3-user-creds
+                key: aws_app_access_key
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: aws-s3-user-creds
+                key: aws_app_access_token
+          - name: S3_BUCKET_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: app-config
+                key: s3_bucket_name
+                
