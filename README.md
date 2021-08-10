@@ -1,10 +1,12 @@
 ## Prerequisites
-The Terraform CLI (1.0.4) installed.
-The AWS CLI installed.
-An AWS account.
-Your AWS credentials. You can create a new Access Key on this page. https://console.aws.amazon.com/iam/home?#/security_credentials
 
-## Steps:
+* The Terraform CLI (1.0.4) installed.
+* The AWS CLI installed.
+* An AWS account.
+* Your AWS credentials. You can create a new Access Key on this page. https://console.aws.amazon.com/iam/home?#/security_credentials
+
+## Steps
+
     1. Create a policy
         Select JSON and past this https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/iam-permissions.md
     2. Create new user named terraform
@@ -15,6 +17,7 @@ Your AWS credentials. You can create a new Access Key on this page. https://cons
     3. Configure your aws cli with the new user's credentials by running `aws configure`
 
 ## Commands
+
     terraform init
     terraform validate
     terraform apply -var-file=variables.tfvars
