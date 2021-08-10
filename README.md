@@ -7,14 +7,14 @@
 
 ## Steps
 
-    1. Create a policy
-        Select JSON and past this https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/iam-permissions.md
-    2. Create new user named terraform
+1. Create a policy
+   Select JSON and paste the JSON in ./terraform-user-policy.json 
+2. Create new user named terraform
     Permission:
         Select attach existing policy
             AmazonS3FullAccess
             The Terraform EKS Policy previously created
-    3. Configure your aws cli with the new user's credentials by running `aws configure`
+3. Configure your aws cli with the new user's credentials by running `aws configure`
 
 ## Commands
 
