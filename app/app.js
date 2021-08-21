@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
   
   const params = {
     Bucket: process.env.S3_BUCKET_NAME,
-    Key: "salute.json", //Use a unique name here
+    Key: "salute.json",
     Body: JSON.stringify({
       meta: 'Written from app running in EKS',
       salute: `Hello ${name}`
@@ -28,6 +28,6 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Sample app listening at http://localhost:${port}`)
 })
 
