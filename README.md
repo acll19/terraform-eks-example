@@ -111,7 +111,7 @@ region                 = "<REGION>" // The AWS region you are using
 
 Then change the name of the file to `variables.tfvars`
 
-These variable are used to configure the AWS Terraform provider in [providers.tf](./infra/k8s/providers.tf)
+These variables are used to configure the AWS Terraform provider in [providers.tf](./infra/k8s/providers.tf)
 
 #### 4.4 Run Terraform apply
 
@@ -143,15 +143,15 @@ The intention here is to publish the image in your Docker Hub account, but you c
 
 #### 5.3 Deploy your application
 
-1. Open the [deployment.yaml](./app/deployment.yaml) file and replace the image name with the name you used to build you image
+1. Open the [deployment.yaml](./app/deployment.yaml) file and replace the image name with the name you used to build your image
 2. Run `kubectl apply -f ./deployment.yaml`
 3. Run `kubectl get pod -n application`. You should see a K8S pod running.
 
 #### 5.4 Test the application
 
 1. Run `kubectl port-forward <pod-name> 3000:3000 -n application`
-2. Open [localhost:3000](http://localhost:3000?name=EKS-Terraform-Example) in your browser
-3. Go to the [AWS S3](https://s3.console.aws.amazon.com/s3/home) page in the AWS Console to see the results. (Remember to provide a `?name` query string)
+2. Open [localhost:3000](http://localhost:3000?name=EKS-Terraform-Example) in your browser (Remember to provide a `?name` query string)
+3. Go to the [AWS S3](https://s3.console.aws.amazon.com/s3/home) page in the AWS Console to see the results.
 
 ## Useful Commands
 
