@@ -121,6 +121,36 @@ Now that you have everything set up, the next thing to do is use Terraform to ap
 3. Run `terraform validate`
 4. If everything is fine run `terraform apply -var-file=variables.tfvars`
 
+### The application
+
+This repo provides a simple Hello World ExpressJS application that reads an input from a URL query string and saves it in a text file in an AWS bucket. It reads the AWS credentials from environment variables.
+
+You can find the application code inside the `app` folder. [app.js](./app/app.js) contains the NodeJS code. [deployment.yaml](./app/deployment.yaml) contains the K8S manifest to create a deployment in the EKS cluster to manage the application and [Dockerfile](./app/Dockerfile) will help you build a Docker image for your application
+
+#### Build the image
+
+1. Go inside the `app` folder
+2. Run `docker build . -t <your-docker-hub-username>/s3-express-app`
+
+The intention here is to publish the image in your Docker Hub account, but you can use any Docker registry you like. Also, the name of the image could be anything you like.
+
+#### Push your docker image
+
+Run `docker login` if you haven't already, then, run the following command:
+`docker push <your-docker-hub-username>/s3-express-app`
+
+#### Deploy your application
+
+1. Open the [deployment.yaml](./app/deployment.yaml) file and replace the image name with the name you used to build you image
+2. Run `kubectl apply -f ./deployment.yaml`
+3. Run `kubectl get pod -n application`. You should see a K8S pod running.
+
+#### Test the application
+
+1. Run `kubectl port-forward <pod-name> 3000:3000 -n application`
+2. Open [localhost:3000](http://localhost:3000?name=EKS-Terraform-Example) in your browser
+3. Go to the [AWS S3](https://s3.console.aws.amazon.com/s3/home) page in the AWS Console to see the results. (Remember to provide a `?name` query string)
+
 ## Useful Commands
 
 ```Shell
