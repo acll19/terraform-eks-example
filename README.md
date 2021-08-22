@@ -1,6 +1,6 @@
 # Terraform EKS Example
 
-This repo will help you provision an EKS cluster with basic configuration with Terraform. It will also create a S3 bucket. Bisides that you will find an ExpreseJS "Hello World" application that reads your name from a URL query parameter and creates a file that contains your name and stores it in the S3 bucket
+This repo will help you provision an EKS cluster with basic configuration with Terraform. It will also create a S3 bucket. Besides that you will find an ExpreseJS "Hello World" application that reads your name from a URL query parameter and creates a file that contains your name and stores it in the S3 bucket.
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ This repo will help you provision an EKS cluster with basic configuration with T
 
 ### Set up AWS
 
-#### Create a new policy
+#### Create a new IAM policy
 
 1. Go to IAM page in the AWS Console
 2. Then Access management > [Policies](https://console.aws.amazon.com/iamv2/home?#/policies)
@@ -24,7 +24,7 @@ This repo will help you provision an EKS cluster with basic configuration with T
 
 (*) Minimum permissions needed for your IAM user or IAM role to create an EKS cluster. Taken from the terraform-aws-modules [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/iam-permissions.md)
 
-#### Create a new user for Terraform
+#### Create a new IAM user for Terraform
 
 1. Go to IAM page in the AWS Console
 2. Then Access management > [Users](https://console.aws.amazon.com/iam/home#/users)
@@ -64,6 +64,7 @@ Configure your aws cli with the new user's credentials by running `aws configure
 5. Run `terraform init`
 6. Run `terraform validate`
 7. If everything is fine run `terraform apply -var-file=variables.tfvars`
+8. Run `kubectl get nodes -owide` to see the cluster node.
 
 Terraform will start creating all the resources needed to spin up an EKS cluster plus a S3 bucket. This may take around 10 minutes.
 
@@ -136,7 +137,8 @@ The intention here is to publish the image in your Docker Hub account, but you c
 
 #### Push your docker image
 
-Run `docker login` if you haven't already, then, run the following command:
+1. Run `docker login` if you haven't already, then,
+2. run the following command:
 `docker push <your-docker-hub-username>/s3-express-app`
 
 #### Deploy your application
@@ -166,11 +168,11 @@ kubectl port-forward <pod-name> 3000:3000 -n application
 
 ## Sources
 
-https://learn.hashicorp.com/tutorials/terraform/aws-build?in=terraform/aws-get-started
-https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
-https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/iam-permissions.md
-https://learn.hashicorp.com/tutorials/terraform/eks
-https://github.com/hashicorp/learn-terraform-provision-eks-cluster
-https://docs.aws.amazon.com/eks/latest/userguide/sec-group-reqs.html
-https://github.com/hashicorp/terraform-provider-kubernetes
-https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace
+* https://learn.hashicorp.com/tutorials/terraform/aws-build?in=terraform/aws-get-started
+* https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
+* https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/iam-permissions.md
+* https://learn.hashicorp.com/tutorials/terraform/eks
+* https://github.com/hashicorp/learn-terraform-provision-eks-cluster
+* https://docs.aws.amazon.com/eks/latest/userguide/sec-group-reqs.html
+* https://github.com/hashicorp/terraform-provider-kubernetes
+* https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace
