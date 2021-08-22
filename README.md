@@ -12,9 +12,9 @@ This repo will help you provision an EKS cluster with basic configuration with T
 
 ## How to run
 
-### Set up AWS
+### 1. Set up AWS
 
-#### Create a new IAM policy
+#### 1.1 Create a new IAM policy
 
 1. Go to IAM page in the AWS Console
 2. Then Access management > [Policies](https://console.aws.amazon.com/iamv2/home?#/policies)
@@ -24,7 +24,7 @@ This repo will help you provision an EKS cluster with basic configuration with T
 
 (*) Minimum permissions needed for your IAM user or IAM role to create an EKS cluster. Taken from the terraform-aws-modules [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/iam-permissions.md)
 
-#### Create a new IAM user for Terraform
+#### 1.2 Create a new IAM user for Terraform
 
 1. Go to IAM page in the AWS Console
 2. Then Access management > [Users](https://console.aws.amazon.com/iam/home#/users)
@@ -34,7 +34,7 @@ This repo will help you provision an EKS cluster with basic configuration with T
     * `AmazonS3FullAccess`
     * The Terraform EKS Policy previously created
 
-#### Create a new Access key for the Terraform's user
+#### 1.3 Create a new Access key for the Terraform's user
 
 Now that you have a new user, you need to attach an access key to that user. These are the credentials you are going to use to configure your aws cli.
 
@@ -44,11 +44,11 @@ Now that you have a new user, you need to attach an access key to that user. The
 4. Select the [Security credentials](https://console.aws.amazon.com/iam/home#/users/terraform?section=security_credentials) tab
 5. Finally click on Create access key
 
-#### Configure your AWS cli
+#### 1.4 Configure your AWS cli
 
 Configure your aws cli with the new user's credentials by running `aws configure`
 
-### Create the EKS cluster and S3 bucket with Terraform
+### 2. Create the EKS cluster and S3 bucket with Terraform
 
 1. Go inside the `infra` folder
 2. Create a folder named `tf_user`
@@ -68,15 +68,15 @@ Configure your aws cli with the new user's credentials by running `aws configure
 
 Terraform will start creating all the resources needed to spin up an EKS cluster plus a S3 bucket. This may take around 10 minutes.
 
-### Configure kubectl
+### 3. Configure kubectl
 
 Now that you have an EKS cluster you can configure your `kubectl` cli to connect to it from your terminal. To do so, you can use the `eks` command as follows `aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)`. This also references the output variables created by terraform in the previous step.
 
-### Create the K8S resources the application needs
+### 4. Create the K8S resources the application needs
 
 For the Hello World application to run properly we need to create some configuration data first: a kubernetes secret to store the AWS user credentials for the application to write in AWS S3 and a kubernetes config map to store the bucket name the application will be writing to (keep in mind that the name needs to be globally unique)
 
-#### Create a new user for application
+#### 4.1 Create a new user for application
 
 Before we do that we need to create a new user for the application, so we can grant it access to S3 only.
 
@@ -86,7 +86,7 @@ Before we do that we need to create a new user for the application, so we can gr
 4. Provide a name
 5. In the permissions step select `AmazonS3FullAccess`
 
-#### Create a new Access key for the application's user
+#### 4.2 Create a new Access key for the application's user
 
 Now that you have a new user, you need to attach an access key to that user. These are the credentials you are going to store in the K8S secret.
 
@@ -96,7 +96,7 @@ Now that you have a new user, you need to attach an access key to that user. The
 4. Select the [Security credentials](https://console.aws.amazon.com/iam/home#/users/terraform?section=security_credentials) tab
 5. Finally click on Create access key
 
-#### The variables-template.tfvars
+#### 4.3 The variables-template.tfvars
 
 To provision these K8S resources we need to provide variables to the `terraform apply` command. Similarly to how it was done for creating the EKS cluster.
 The [variables-template.tfvars](./infra/k8s/variables-template.tfvars) file has a needed variables. So all you need to do is provide the right values.
@@ -113,7 +113,7 @@ Then change the name of the file to `variables.tfvars`
 
 These variable are used to configure the AWS Terraform provider in [providers.tf](./infra/k8s/providers.tf)
 
-#### Run Terraform apply
+#### 4.4 Run Terraform apply
 
 Now that you have everything set up, the next thing to do is use Terraform to apply your resource declaration
 
@@ -122,32 +122,32 @@ Now that you have everything set up, the next thing to do is use Terraform to ap
 3. Run `terraform validate`
 4. If everything is fine run `terraform apply -var-file=variables.tfvars`
 
-### The application
+### 5. The application
 
 This repo provides a simple Hello World ExpressJS application that reads an input from a URL query string and saves it in a text file in an AWS bucket. It reads the AWS credentials from environment variables.
 
 You can find the application code inside the `app` folder. [app.js](./app/app.js) contains the NodeJS code. [deployment.yaml](./app/deployment.yaml) contains the K8S manifest to create a deployment in the EKS cluster to manage the application and [Dockerfile](./app/Dockerfile) will help you build a Docker image for your application
 
-#### Build the image
+#### 5.1 Build the image
 
 1. Go inside the `app` folder
 2. Run `docker build . -t <your-docker-hub-username>/s3-express-app`
 
 The intention here is to publish the image in your Docker Hub account, but you can use any Docker registry you like. Also, the name of the image could be anything you like.
 
-#### Push your docker image
+#### 5.2 Push your docker image
 
 1. Run `docker login` if you haven't already, then,
 2. run the following command:
 `docker push <your-docker-hub-username>/s3-express-app`
 
-#### Deploy your application
+#### 5.3 Deploy your application
 
 1. Open the [deployment.yaml](./app/deployment.yaml) file and replace the image name with the name you used to build you image
 2. Run `kubectl apply -f ./deployment.yaml`
 3. Run `kubectl get pod -n application`. You should see a K8S pod running.
 
-#### Test the application
+#### 5.4 Test the application
 
 1. Run `kubectl port-forward <pod-name> 3000:3000 -n application`
 2. Open [localhost:3000](http://localhost:3000?name=EKS-Terraform-Example) in your browser
