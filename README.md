@@ -176,3 +176,4 @@ kubectl port-forward <pod-name> 3000:3000 -n application
 * https://docs.aws.amazon.com/eks/latest/userguide/sec-group-reqs.html
 * https://github.com/hashicorp/terraform-provider-kubernetes
 * https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace
+* https://www.terraform.io/docs/language/data-sources/index.html
