@@ -52,10 +52,10 @@ Configure your aws cli with the new user's credentials by running `aws configure
 
 1. Go inside the `infra` folder
 2. Create a folder named `tf_user`
-3. Inside the `tf_user` folder create a text file named `credentials` and past your Access key details. It should look like this:
+3. Inside the `tf_user` folder create a text file named `credentials` and past your Access key details. It should look like this (replace default with the AWS profile you are using):
 
     ```Javascript
-    [default] // Replace this with the AWS profile you are using
+    [default]
     aws_access_key_id = <your_aws_access_key_id>
     aws_secret_access_key = <your_aws_secret_access_key>
     ```
@@ -63,7 +63,7 @@ Configure your aws cli with the new user's credentials by running `aws configure
 4. Go inside the `eks-and-s3` folder
 5. Run `terraform init`
 6. Run `terraform validate`
-7. If everything is fine run `terraform apply -var-file=variables.tfvars`
+7. If everything is fine run `terraform apply -var-file=variables-dev.tfvars`
 8. Run `kubectl get nodes -owide` to see the cluster node.
 
 Terraform will start creating all the resources needed to spin up an EKS cluster plus a S3 bucket. This may take around 10 minutes.
@@ -120,7 +120,7 @@ Now that you have everything set up, the next thing to do is use Terraform to ap
 1. Go inside the `k8s` folder
 2. Run `terraform init`
 3. Run `terraform validate`
-4. If everything is fine run `terraform apply -var-file=variables.tfvars`
+4. If everything is fine run `terraform apply -var-file=variables.-devtfvars`
 
 ### 5. The application
 
