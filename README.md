@@ -120,7 +120,7 @@ Now that you have everything set up, the next thing to do is use Terraform to ap
 1. Go inside the `k8s` folder
 2. Run `terraform init`
 3. Run `terraform validate`
-4. If everything is fine run `terraform apply -var-file=variables.-devtfvars`
+4. If everything is fine run `terraform apply -var-file=variables.tfvars`
 
 ### 5. The application
 
