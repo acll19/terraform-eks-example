@@ -153,6 +153,10 @@ The intention here is to publish the image in your Docker Hub account, but you c
 2. Open [localhost:3000](http://localhost:3000?name=EKS-Terraform-Example) in your browser (Remember to provide a `?name` query string)
 3. Go to the [AWS S3](https://s3.console.aws.amazon.com/s3/home) page in the AWS Console to see the results.
 
+### 6. Terraform destroy
+
+AFter you have played enough with Terraform, you might want to delete all AWS resources you have created. You can do so by going into the `eks-and-s3` folder and running `terraform distroy -var-file=variables-dev.tfvars`. Keep in mind that you have to delete the generated file from the S3 bucket before running this command, because you can't delete a bucket that is not empty.
+
 ## Useful Commands
 
 ```Shell
