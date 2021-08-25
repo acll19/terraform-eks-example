@@ -52,7 +52,7 @@ Configure your aws cli with the new user's credentials by running `aws configure
 
 1. Go inside the `infra` folder
 2. Create a folder named `tf_user`
-3. Inside the `tf_user` folder create a text file named `credentials` and past your Access key details. It should look like this (replace default with the AWS profile you are using):
+3. Inside the `tf_user` folder create a text file named `credentials` and paste your Access key details. It should look like this (replace default with the AWS profile you are using):
 
     ```Javascript
     [default]
